@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Space invaders</title>
+</head>
+<body>
+  <main>
+    <div class="wrapper" id="home">
+      <section class="welcome">
+        <h1 class="title">Space Invaders</h1>
+        <div class="action">
+          <img
+            lazy
+            src="/assets/spaceship.png"
+            alt="spaceship"
+            class="good"
+            width="80"
+          >
+
+          <button class="start" id="game-launcher">
+            Game Start
+          </button>
+
+          <img
+            src="/assets/drone.png"
+            alt="evil character"
+            class="evil"
+            width="80"
+          >
+        </div>
+      </section>
+    </div>
+
+    <section class="playground-container d-none" id="playground">
+      <section class="score-bar">
+        <h2>Score: <span id="score-label">0</span></h2>
+      </section>
+
+      <section id="ground" class="ground">
+      </section>
+    </section>
+  </main>
+  <script src="main.js"></script>
+</body>
+</html>
