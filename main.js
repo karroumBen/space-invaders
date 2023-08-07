@@ -9,20 +9,25 @@ let score = 0;
 const width = '60px';
 let isGameOver = false;
 
+//music
+var shoot = new Audio('assets/music/shoot.wav');
+var startingMusic = new Audio('assets/music/starting-music.wav');
+var droneKilled = new Audio('assets/music/drone-killed.wav');
+
 gameLauncher.addEventListener('click', (evt) => {
   startGame(evt);
   const initPlayerInterval = setInterval(() => {
-    initPlayer({ src: 'assets/drone.png', type: 'evil'});
+    initPlayer({ src: 'assets/drone.png', type: 'evil' });
     const evilObjects = document.querySelectorAll('.evil-player');
-      if(evilObjects.length) { 
-        evilObjects.forEach(item => {
-          let { y } = item;
-          y += 40;
-          item.style.top = y + 'px';
-        })
-      }
-    
-    if(isEnemyBreach()) {
+    if (evilObjects.length) {
+      evilObjects.forEach(item => {
+        let { y } = item;
+        y += 20;
+        item.style.top = y + 'px';
+      })
+    }
+
+    if (isEnemyBreach()) {
       clearInterval(initPlayerInterval);
       isGameOver = true;
       console.log('you lost');
@@ -31,10 +36,11 @@ gameLauncher.addEventListener('click', (evt) => {
 })
 
 const startGame = (evt) => {
+  
   home.classList.toggle('d-none');
   battleGround.classList.toggle('d-none');
-  initPlayer({ src: 'assets/drone.png', type: 'evil'});
-  initPlayer({ src: 'assets/spaceship.png', type: 'good'});
+  initPlayer({ src: 'assets/drone.png', type: 'evil' });
+  initPlayer({ src: 'assets/spaceship.png', type: 'good' });
 }
 
 const initPlayer = (params) => {
@@ -43,10 +49,10 @@ const initPlayer = (params) => {
   player.src = src;
   player.style.width = width;
   player.style.position = 'absolute';
-  
+
   player.style.zIndex = 3;
 
-  if(type == 'good') {
+  if (type == 'good') {
     player.id = 'spaceShip';
     player.style.bottom = '20px';
     player.style.left = '50%';
@@ -60,8 +66,9 @@ const initPlayer = (params) => {
 }
 
 const launchRockets = () => {
+  shoot.play()
   const spaceShip = document.querySelector('#spaceShip');
-  const {left, width} = spaceShip.getBoundingClientRect();
+  const { left, width } = spaceShip.getBoundingClientRect();
 
   const rocket = document.createElement('img');
   rocket.src = 'assets/rocket.png';
@@ -77,11 +84,14 @@ const launchRockets = () => {
 }
 
 document.addEventListener('keyup', (e) => {
-  if(isGameOver) return;
+  if (isGameOver) {
+
+    return
+  };
 
   if (e.key == " " ||
-      e.code == "Space" ||      
-      e.keyCode == 32      
+    e.code == "Space" ||
+    e.keyCode == 32
   ) {
     const rocket = launchRockets();
     let { x: rocketX, bottom, y: rocketY } = rocket.getBoundingClientRect();
@@ -91,24 +101,24 @@ document.addEventListener('keyup', (e) => {
       let { x: rocketX, y: rocketY } = rocket.getBoundingClientRect();
       currentBottom += step;
       rocket.style.bottom = currentBottom + 'px';
-      if(currentBottom > bottom - 50) {
+      if (currentBottom > bottom - 50) {
         clearInterval(id);
         ground.removeChild(rocket);
       };
-      
+
       const evilObjects = document.querySelectorAll('.evil-player');
-      if(evilObjects.length) {
+      if (evilObjects.length) {
         evilObjects.forEach(item => {
           const { x, y } = item;
 
-          if(inRange(rocketY, y, y + 100) && inRange(rocketX, x, x + 80) ) {
+          if (inRange(rocketY, y, y + 100) && inRange(rocketX, x, x + 80)) {
             item.setAttribute('src', 'assets/explode.png');
             setTimeout(() => {
               ground.removeChild(item);
             }, 150);
             score += 10;
-            if(score > 500) console.log('Congratulations');
-            scoreLabel.textContent = score +'';
+            if (score > 500) console.log('Congratulations');
+            scoreLabel.textContent = score + '';
           }
         })
       }
@@ -117,11 +127,11 @@ document.addEventListener('keyup', (e) => {
 
   if (e.keyCode == 37) {// move spaceship left
     const spaceShip = document.querySelector('#spaceShip');
-    const {left} = spaceShip.getBoundingClientRect();
+    const { left } = spaceShip.getBoundingClientRect();
     let currentLeft = left;
 
-    if(left > step) {
-      currentLeft -= 4*step;
+    if (left > step) {
+      currentLeft -= 4 * step;
       spaceShip.style.left = currentLeft + 'px';
     }
   }
@@ -132,7 +142,7 @@ document.addEventListener('keyup', (e) => {
     const { width } = ground.getBoundingClientRect();
     let currentRight = right;
 
-    if(right < width - 2 * step) {
+    if (right < width - 2 * step) {
       currentRight += step;
       spaceShip.style.left = currentRight + 'px';
     }
@@ -140,7 +150,7 @@ document.addEventListener('keyup', (e) => {
 })
 
 const inRange = (target, min, max) => {
-  if(target >= min && target < max) return true;
+  if (target >= min && target < max) return true;
   return false;
 }
 
@@ -152,7 +162,7 @@ const isEnemyBreach = () => {
   const spaceShip = document.querySelector('#spaceShip');
   const { y } = spaceShip.getBoundingClientRect();
   const evilObjects = document.querySelectorAll('.evil-player');
-  if(evilObjects.length) {
+  if (evilObjects.length) {
     return Array.from(evilObjects).some(item => item.y >= y - 100);
   }
 }
