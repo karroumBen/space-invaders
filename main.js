@@ -2,18 +2,20 @@
 const battleGround = document.querySelector('#playground');
 const home = document.querySelector('#home');
 const gameLauncher = document.querySelector('#game-launcher');
+const takeMeHome = document.querySelector('#backBtn');
 const ground = document.querySelector('#ground');
+const gameOver = document.querySelector('#gameOver');
 const scoreLabel = document.querySelector('#score-label');
 const startingAudio = document.querySelector('#starting_audio');
 const step = 25;
 let score = 0;
 const width = '60px';
 let isGameOver = false;
-let speed = 1.5;
+let speed = 1;
 
-document.addEventListener('mouseover', () => {
-    startingAudio.play();
-})
+// document.addEventListener('mouseover', () => {
+//     startingAudio.play();
+// })
 
 //music
 const shoot = new Audio('assets/music/shoot.wav');
@@ -21,8 +23,20 @@ const droneKilled = new Audio('assets/music/drone-killed.wav');
 
 gameLauncher.addEventListener('click', (evt) => {
   startGame(evt);
+  
+})
+
+const startGame = (evt) => {
+  home.classList.toggle('d-none');
+  battleGround.classList.toggle('d-none');
+  initPlayer({ src: 'assets/drone.png', type: 'evil' });
+  initPlayer({ src: 'assets/spaceship.png', type: 'good' });
+
   const initPlayerInterval = setInterval(() => {
-    initPlayer({ src: 'assets/drone.png', type: 'evil' });
+    for (let i = 0; i < 3; i++) {
+      initPlayer({ src: 'assets/drone.png', type: 'evil' });
+    }
+
     const evilObjects = document.querySelectorAll('.evil-player');
     if (evilObjects.length) {
       evilObjects.forEach(item => {
@@ -35,17 +49,11 @@ gameLauncher.addEventListener('click', (evt) => {
     if (isEnemyBreach()) {
       clearInterval(initPlayerInterval);
       isGameOver = true;
-      console.log('you lost');
+      home.classList.add('d-none');
+      battleGround.classList.toggle('d-none');
+      gameOver.classList.toggle('d-none');
     }
   }, speed * 1000);
-})
-
-const startGame = (evt) => {
-  
-  home.classList.toggle('d-none');
-  battleGround.classList.toggle('d-none');
-  initPlayer({ src: 'assets/drone.png', type: 'evil' });
-  initPlayer({ src: 'assets/spaceship.png', type: 'good' });
 }
 
 const initPlayer = (params) => {
@@ -117,7 +125,7 @@ document.addEventListener('keyup', (e) => {
             item.setAttribute('src', 'assets/explode.png');
             setTimeout(() => {
               ground.removeChild(item);
-            }, 150);
+            }, 120);
             score += 10;
             if (score > 100) {
               speed -= 1;
@@ -170,3 +178,9 @@ const isEnemyBreach = () => {
     return Array.from(evilObjects).some(item => item.y >= y - 100);
   }
 }
+
+takeMeHome.addEventListener('click', () => {
+  home.classList.remove('d-none');
+  battleGround.classList.add('d-none');
+  gameOver.classList.toggle('d-none');
+})
