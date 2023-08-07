@@ -4,15 +4,20 @@ const home = document.querySelector('#home');
 const gameLauncher = document.querySelector('#game-launcher');
 const ground = document.querySelector('#ground');
 const scoreLabel = document.querySelector('#score-label');
+const startingAudio = document.querySelector('#starting_audio');
 const step = 25;
 let score = 0;
 const width = '60px';
 let isGameOver = false;
+let speed = 1.5;
+
+document.addEventListener('mouseover', () => {
+    startingAudio.play();
+})
 
 //music
-var shoot = new Audio('assets/music/shoot.wav');
-var startingMusic = new Audio('assets/music/starting-music.wav');
-var droneKilled = new Audio('assets/music/drone-killed.wav');
+const shoot = new Audio('assets/music/shoot.wav');
+const droneKilled = new Audio('assets/music/drone-killed.wav');
 
 gameLauncher.addEventListener('click', (evt) => {
   startGame(evt);
@@ -32,7 +37,7 @@ gameLauncher.addEventListener('click', (evt) => {
       isGameOver = true;
       console.log('you lost');
     }
-  }, 2000);
+  }, speed * 1000);
 })
 
 const startGame = (evt) => {
@@ -84,10 +89,7 @@ const launchRockets = () => {
 }
 
 document.addEventListener('keyup', (e) => {
-  if (isGameOver) {
-
-    return
-  };
+  if (isGameOver) return;
 
   if (e.key == " " ||
     e.code == "Space" ||
@@ -117,12 +119,14 @@ document.addEventListener('keyup', (e) => {
               ground.removeChild(item);
             }, 150);
             score += 10;
-            if (score > 500) console.log('Congratulations');
+            if (score > 100) {
+              speed -= 1;
+            }
             scoreLabel.textContent = score + '';
           }
         })
       }
-    }, 300);
+    }, 200);
   }
 
   if (e.keyCode == 37) {// move spaceship left
@@ -142,7 +146,7 @@ document.addEventListener('keyup', (e) => {
     const { width } = ground.getBoundingClientRect();
     let currentRight = right;
 
-    if (right < width - 2 * step) {
+    if (right < width - 4 * step) {
       currentRight += step;
       spaceShip.style.left = currentRight + 'px';
     }
