@@ -25,7 +25,7 @@ gameLauncher.addEventListener('click', (evt) => {
       clearInterval(initPlayerInterval);
       console.log('you lost');
     }
-  }, 500);
+  }, 2000);
 })
 
 const startGame = (evt) => {
@@ -96,16 +96,18 @@ document.addEventListener('keyup', (e) => {
       const evilObjects = document.querySelectorAll('.evil-player');
       if(evilObjects.length) {
         evilObjects.forEach(item => {
-          const { x, y, width, height } = item;
+          const { x, y } = item;
           console.log(x, y, rocketY, rocketX);
           if(inRange(rocketY, y, y + 100) && inRange(rocketX, x, x + 80) ) {
+            item.setAttribute('src', 'assets/explode.png')
             ground.removeChild(item);
             score += 10;
+            if(score > 500) console.log('Congratulations');
             scoreLabel.textContent = score +'';
           }
         })
       }
-    }, 100);
+    }, 150);
   }
 
   if (e.keyCode == 37) {// move spaceship left
