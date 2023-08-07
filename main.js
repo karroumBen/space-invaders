@@ -8,10 +8,10 @@ const gameOver = document.querySelector('#gameOver');
 const scoreLabel = document.querySelector('#score-label');
 const startingAudio = document.querySelector('#starting_audio');
 const step = 25;
-let score = 0;
 const width = '60px';
-let isGameOver = false;
-let speed = 1;
+let score;
+let isGameOver;
+let speed;
 
 // document.addEventListener('mouseover', () => {
 //     startingAudio.play();
@@ -23,17 +23,21 @@ const droneKilled = new Audio('assets/music/drone-killed.wav');
 
 gameLauncher.addEventListener('click', (evt) => {
   startGame(evt);
-  
 })
 
 const startGame = (evt) => {
-  home.classList.toggle('d-none');
-  battleGround.classList.toggle('d-none');
-  initPlayer({ src: 'assets/drone.png', type: 'evil' });
+  score = 0;
+  speed = 1;
+  isGameOver = false;
+  scoreLabel.textContent = score + '';
+  home.classList.add('d-none');
+  gameOver.classList.add('d-none');
+  battleGround.classList.remove('d-none');
+
   initPlayer({ src: 'assets/spaceship.png', type: 'good' });
 
   const initPlayerInterval = setInterval(() => {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       initPlayer({ src: 'assets/drone.png', type: 'evil' });
     }
 
@@ -50,8 +54,8 @@ const startGame = (evt) => {
       clearInterval(initPlayerInterval);
       isGameOver = true;
       home.classList.add('d-none');
-      battleGround.classList.toggle('d-none');
-      gameOver.classList.toggle('d-none');
+      battleGround.classList.add('d-none');
+      gameOver.classList.remove('d-none');
     }
   }, speed * 1000);
 }
@@ -180,7 +184,19 @@ const isEnemyBreach = () => {
 }
 
 takeMeHome.addEventListener('click', () => {
+  clearGame();
+})
+
+const clearGame = () => {
+  const spaceShip = document.querySelector('#spaceShip');
+  ground.removeChild(spaceShip);
+  const evilObjects = document.querySelectorAll('.evil-player');
+  if (evilObjects.length) {
+    evilObjects.forEach(item => ground.removeChild(item));
+  }
+
   home.classList.remove('d-none');
   battleGround.classList.add('d-none');
-  gameOver.classList.toggle('d-none');
-})
+  gameOver.classList.add('d-none');
+
+}
