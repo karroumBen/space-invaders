@@ -5,7 +5,7 @@ body {
 }
 
 main {
-  background-image: url('assets/background.jpg');
+  background-image: url("assets/background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
@@ -65,26 +65,22 @@ main {
 .start:hover,
 .start:focus-visible {
   background-color: red;
-
 }
 
 @keyframes float {
-	0% {
-		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
-		transform: translatey(0px);
-	}
-	50% {
-		box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);
-		transform: translatey(-20px);
-	}
-	100% {
-		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
-		transform: translatey(0px);
-	}
+  0% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px);
+  }
+  50% {
+    box-shadow: 0 25px 15px 0px rgba(0, 0, 0, 0.2);
+    transform: translatey(-20px);
+  }
+  100% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px);
+  }
 }
-
-
-
 
 .playground-container {
   display: grid;
@@ -124,8 +120,8 @@ main {
 }
 
 .game-over button {
-  grid-column: 3 / 2;
-    grid-row: 3 / 3;
+  grid-column: 2 / 3;
+  grid-row: 3 / 3;
 }
 
 .d-none {
